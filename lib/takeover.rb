@@ -45,7 +45,8 @@ module Takeover
       begin
         Timeout::timeout(1) do
           begin
-            TCPSocket.new("localhost", port).close
+            TCPSocket.new("127.0.0.1", port).close
+            puts "socket is open!"
             return true
           rescue  Errno::ECONNREFUSED, Errno::EHOSTUNREACH
             return false
