@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Arnold Noronha"]
   s.email       = ["arnstein87@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{a simple gem that uses iptables to map a fixed ip address to an internal address, so that the internal service can be restarted with zero downtime.}
+  s.description = %q{}
 
   s.rubyforge_project = "takeover"
 
