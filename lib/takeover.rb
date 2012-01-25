@@ -10,20 +10,19 @@ module Takeover
     end
 
     # kill the process currently owning the given port
-    def kill_current(port = mapping, sig = "INT")
+    def kill_current(port = mapping.first, sig = "INT")
       if port
         system("fuser -n tcp  -k -#{sig} #{port}/tcp")
       end
     end
 
-    # get the current mapping for the given port 
+    # get the current mappings for the given port 
     def mapping
       e = chains = `sudo iptables -L PREROUTING -t nat`.split("\n").select { |i|
         i =~ /dpt:#{@port}/
       }
 
-      return nil if e == [] 
-      e.first.split.last.to_i
+      e.collect { |i| i.split.last.to_i }
     end
 
     def set_mapping(to_port)
@@ -36,7 +35,7 @@ module Takeover
 
     def set_mapping_and_interrupt(to_port)
       current = mapping
-      kill_current(current, "INT")
+      current.each { |i|  kill_current(i, "INT") }
       set_mapping(to_port)
       del_mapping(current)
     end
@@ -63,7 +62,7 @@ module Takeover
       end_time = Time.now + timeout
       while (Time.now < end_time) 
         if (is_port_open?(to_port))
-          set_mapping(to_port)
+          set_mapping_and_interrupt(to_port)
           return
         else
           puts "port not yet open"
