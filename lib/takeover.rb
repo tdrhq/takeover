@@ -37,7 +37,9 @@ module Takeover
       current = mapping
       current.each { |i|  kill_current(i, "INT") }
       set_mapping(to_port)
-      del_mapping(current)
+      current.each { |i|
+        del_mapping(i)
+      }
     end
 
     def is_port_open?(port)
